@@ -1,4 +1,5 @@
 # Cassava Disease Classification
+![](https://github.com/SawsanYusuf/Cassava-Disease-Image-Classification/blob/main/Cassava%20Plant.jpg)
 
 This project focuses on classifying diseases affecting cassava plants, a crucial food source in Uganda and other regions globally. Imagine monitoring the health of your cassava farm by inspecting leaves for signs of disease. While seemingly straightforward, manual disease identification can be challenging, as normal leaf variations can resemble symptoms of serious infections. Accurate disease classification is vital as it dictates the appropriate treatment.
 
