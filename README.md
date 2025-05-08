@@ -106,5 +106,3 @@ Despite the promising results, further improvements could be explored:
 * **Applying Data Augmentation:** Increasing the diversity of the training data through transformations like rotations, flips, and zooms to reduce overfitting.
 * **Fine-tuning More Layers:** Gradually unfreezing and fine-tuning more layers of the pre-trained ResNet-50 model.
 * **Training on the Entire Dataset:** After k-fold validation, training the final model on the entire dataset using the best hyperparameters found during cross-validation.
-
-This documentation provides an overview of the cassava disease classification project, outlining the problem, dataset, methodologies employed (including transfer learning and callbacks), and potential avenues for future enhancements.
