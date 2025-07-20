@@ -1,109 +1,87 @@
-# Cassava Disease Classification
+#  Crop Diseases in Uganda: Deep Learning for Cassava Leaf Classification
+
 ![](https://github.com/SawsanYusuf/Cassava-Disease-Image-Classification/blob/main/Cassava%20Plant.jpg)
 
-This project focuses on classifying diseases affecting cassava plants, a crucial food source in Uganda and other regions globally. Imagine monitoring the health of your cassava farm by inspecting leaves for signs of disease. While seemingly straightforward, manual disease identification can be challenging, as normal leaf variations can resemble symptoms of serious infections. Accurate disease classification is vital as it dictates the appropriate treatment.
+## Rapid and Accurate Diagnostic Aid for Cassava Health
 
-This is where the power of machine learning comes into play. The project aims to develop a computer vision model capable of analyzing images of cassava leaves and automatically determining if they are healthy or affected by a disease. For diseased plants, the model will further classify the specific type of ailment.
+This project implements a deep learning solution for the automated classification of cassava leaf images, aiming to identify common diseases affecting this crucial crop in Uganda. By leveraging Convolutional Neural Networks (CNNs), the model can distinguish between healthy leaves and various disease states, providing a vital tool for farmers to manage crop health, prevent widespread outbreaks, and ensure food security.
 
-## Dataset Overview
+## Project Highlights
 
-The dataset comprises images of cassava leaves, organized into training and testing sets. The training set is further divided into five distinct folders, each representing a different class:
+* **Multi-Class Classification:** Differentiates between five distinct cassava leaf conditions: 'cassava-healthy', 'cassava-mosaic-disease-cmd', 'cassava-brown-streak-disease-cbsd', 'cassava-green-mottle-cgm', and 'cassava-bacterial-blight-cbb'.
+* **Transfer Learning with ResNet-18:** Utilizes a powerful pre-trained CNN architecture (ResNet-18) as a feature extractor, adapting it for high-accuracy performance on cassava leaf images.
+* **Robust Data Handling:** Implements meticulous data preprocessing, including image standardization and normalization, crucial for deep learning models.
+* **Class Imbalance Mitigation:** Addresses imbalanced class distribution in the dataset through an effective undersampling strategy during training.
+* **Comprehensive Evaluation:** Provides detailed performance metrics (accuracy, precision, recall, F1-score) and visual error analysis on an unseen test set.
 
-1.  **Healthy Cassava:** Images of healthy cassava leaves.
-2.  **Bacterial Blight:** Images showing brown spots indicative of Bacterial Blight.
-3.  **Brown Streak:** Images displaying the characteristic streaks of discoloration associated with Brown Streak disease.
-4.  **Green Mottle:** Images exhibiting the symptoms of Green Mottle disease.
-5.  **Mosaic Disease:** Images showing the mosaic-like pattern on leaves caused by Mosaic Disease.
+## Dataset
 
-Each image is labeled implicitly based on the folder it resides in. For instance, all images within the "Bacterial Blight" folder are labeled accordingly.
+The model is trained and evaluated on a structured dataset of cassava leaf images. The images are categorized into the five classes mentioned above, representing different health states of the plant. The dataset was split into training, validation, and test sets (70%, 20%, 10% respectively) to ensure robust model development and unbiased evaluation.
 
-**Sample Images:**
+## Methodology
 
-* **Bacterial Blight:** Brown spots on the leaves.
-* **Brown Streak:** Visible streaks of discoloration.
-* **Healthy Cassava:** Leaves that may appear normal to the untrained eye.
+Our approach involved a systematic deep learning pipeline built using PyTorch:
 
-The primary goal is to automate the classification process, which would be impractical to perform manually on a large scale. By building a robust computer vision model, we can efficiently and accurately categorize these images.
+1.  **Environment Setup:** Python 3.11.0 and PyTorch 2.2.2+cu121 were configured, leveraging CUDA for GPU acceleration.
+2.  **Data Preprocessing & Augmentation:**
+    * Images were resized to 224x224 pixels and converted to RGB format.
+    * Global mean and standard deviation were calculated from the dataset for image normalization.
+    * An **undersampling strategy** was applied to the training set to ensure a balanced distribution of classes, preventing the model from being biased towards majority classes.
+3.  **Model Architecture:**
+    * A pre-trained **ResNet-18** model was used for transfer learning.
+    * The convolutional layers (feature extractor) were frozen, and a new custom classification head was added, tailored to output predictions for the five cassava leaf classes.
+4.  **Model Training:**
+    * The model was trained using the **Adam optimizer** and `nn.CrossEntropyLoss`.
+    * A **`StepLR` learning rate scheduler** was implemented to gradually reduce the learning rate during training, aiding in better convergence.
+    * Training was monitored on the validation set, and the best-performing model weights (based on validation accuracy) were saved.
+5.  **Model Evaluation:**
+    * The final model was rigorously evaluated on a completely unseen test set.
+    * Performance was assessed using overall test accuracy, per-class precision, recall, and F1-score.
+    * A confusion matrix was generated to visualize classification results, and a dedicated error analysis provided insights into misclassified images.
 
-## Data Preparation
+## Key Results
 
-The cassava leaf images are loaded and preprocessed using PyTorch Tensors to prepare them for training deep learning models. The essential transformations applied include:
+The ResNet-18 model demonstrated **exceptional performance** on the unseen test set for cassava disease classification:
 
-* **Converting to RGB:** Ensuring all images have three color channels.
-* **Resizing:** Standardizing the size of all images to 224x224 pixels.
-* **Converting to Tensors:** Transforming the images into PyTorch Tensor objects.
-* **Normalization:** Scaling pixel values to have a mean of 0 and a standard deviation of 1 for each color channel. This helps in stabilizing and accelerating the training process.
+* **Test Loss:** `0.0526`
+* **Test Accuracy:** `0.9859` (98.59%)
 
-A custom class was initially used to handle the conversion to RGB before applying the standard `torchvision.transforms` for resizing, tensor conversion, and normalization.
+**Detailed Classification Report (on Test Set):**
 
-## Initial Model Training and Overfitting
+| Class                               | Precision | Recall | F1-Score | Support |
+| :---------------------------------- | :-------- | :----- | :------- | :------ |
+| `cassava-bacterial-blight-cbb`      | 0.99      | 0.99   | 0.99     | 152     |
+| `cassava-brown-streak-disease-cbsd` | 0.99      | 0.99   | 0.99     | 360     |
+| `cassava-green-mottle-cgm`          | 0.98      | 0.98   | 0.98     | 313     |
+| `cassava-healthy`                   | 0.98      | 0.97   | 0.97     | 286     |
+| `cassava-mosaic-disease-cmd`        | 0.99      | 0.99   | 0.99     | 379     |
+| **Macro Avg** | 0.99      | 0.98   | 0.98     | 1490    |
+| **Weighted Avg** | 0.99      | 0.99   | 0.99     | 1490    |
 
-The project initially involved building and training a Convolutional Neural Network (CNN) from scratch. This process included defining the network architecture, selecting an optimizer, and training the model on the prepared dataset. However, significant overfitting was observed during this phase.
+These results highlight the model's consistent high performance across all classes, indicating its reliability in accurately identifying both healthy and various diseased cassava leaves.
 
-The symptoms of overfitting were evident in:
+## Visualizations
 
-* A substantial gap between the training accuracy (high) and the validation accuracy (plateaued). This indicated that the model was memorizing the training data instead of learning generalizable features.
-* A confusion matrix revealing high misclassification rates across different disease categories, further confirming the model's poor generalization ability.
+The project notebook includes key visualizations to understand model behavior:
 
-## Leveraging Transfer Learning with ResNet-50
+* **Training & Validation Loss/Accuracy Plots:** Illustrate the model's learning progression over epochs.
+* **Class Distribution Plots:** Show the distribution of classes before and after undersampling, confirming successful data balancing.
+* **Confusion Matrix:** Provides a detailed breakdown of correct and incorrect predictions on the test set.
+* **Error Analysis Plots:** Visualizes examples of correctly and incorrectly classified images, aiding in understanding model strengths and areas for potential improvement.
 
-To address the overfitting issue and improve model performance, the project transitioned to using **transfer learning**. This technique involves leveraging pre-trained models that have been trained on massive datasets (like ImageNet) and adapting them to our specific task.
+## Future Work
 
-We utilized the **ResNet-50** architecture, a deep convolutional neural network available through TorchVision. By loading the pre-trained weights of ResNet-50, we could benefit from the features learned by the model on a vast number of images.
+* **Deployment:** Develop a user-friendly application (e.g., mobile app) for real-time disease diagnosis in the field.
+* **Model Optimization:** Explore model quantization or pruning for efficient deployment on edge devices.
+* **Expanded Datasets:** Test the model on new, diverse datasets from various regions and conditions to ensure broader applicability.
+* **Explainable AI (XAI):** Implement Grad-CAM to visualize model attention, enhancing trust and providing insights to agricultural experts.
+* **Multi-Crop/Multi-Disease Scope:** Extend the model to classify diseases in other crops common to the region.
 
-The adaptation process involved:
+## Contributing
 
-* Loading the ResNet-50 architecture using `torchvision.models.resnet50()`.
-* Fetching the pre-trained weights using `torchvision.models.ResNet50_Weights`.
-* Replacing the original classification layer (designed for 1000 ImageNet classes) with a new, untrained fully connected (FC) layer tailored to our 5 cassava disease classes. This new classifier consisted of:
-    1.  A Linear layer mapping 2048 inputs to 256 neurons.
-    2.  A ReLU activation function for introducing non-linearity.
-    3.  A Dropout layer to mitigate overfitting.
-    4.  A final Linear layer mapping 256 neurons to the 5 output classes.
+Contributions, issues, and feature requests are welcome! 
 
-The core idea was to freeze the weights of the pre-trained ResNet-50 layers and only train the newly added classification layers. This allows us to fine-tune the model for our specific task without needing a large dataset or extensive training time.
+## Author
+**Sawsan Yousef** 
 
-## Implementing K-Fold Cross-Validation
-
-To obtain a more reliable evaluation of the fine-tuned model's performance, **k-fold cross-validation** was implemented. Instead of a single 80/20 train-validation split, the dataset was divided into K equal-sized folds. The training process was repeated K times, with each fold serving as the validation set once, while the remaining K-1 folds were used for training. The final performance was the average of the results across all K iterations.
-
-This approach provides a more robust estimate of the model's generalization ability by reducing the impact of any potentially biased single train-validation split. While it increases the training time, the more reliable evaluation is valuable.
-
-The results of the k-fold cross-validation showed:
-
-* Consistent decrease in training loss across folds.
-* More variation in validation loss across folds.
-* Validation accuracy averaging around 61%, with training loss and validation loss being relatively close (around 0.8), suggesting minimal overfitting.
-
-A confusion matrix generated from the final fold's validation set revealed some misclassifications, particularly between Bacterial Blight and Brown Streak, likely due to visual similarities. Misclassifications between Bacterial Blight and healthy samples also suggested potential dataset imbalance or feature extraction challenges.
-
-## Enhancing Training with Callbacks
-
-To further improve the training process and model performance, **callbacks** were introduced. Callbacks are special functions that can be executed at different stages of the training process to modify its behavior dynamically. Three key callbacks were implemented:
-
-1.  **Learning Rate Scheduling:** Adjusting the learning rate during training. Specifically, a `StepLR` scheduler was used to decrease the learning rate by a factor of 0.1 every 4 epochs. This helps the optimization process converge more effectively.
-2.  **Checkpointing:** Saving the model's state (weights) whenever the validation loss improves. This ensures that the best-performing model during training is preserved.
-3.  **Early Stopping:** Monitoring the validation loss and stopping the training process if it doesn't improve for a specified number of epochs (patience). This prevents overfitting by stopping training when the model starts to generalize poorly on unseen data.
-
-By implementing these callbacks, the training process became more efficient and robust:
-
-* The learning rate was gradually reduced, aiding convergence.
-* Overfitting was mitigated by stopping training when validation performance plateaued.
-* The best model based on validation performance was automatically saved.
-
-The results after training with callbacks showed:
-
-* Validation loss not improving significantly after the initial epochs, indicating early stabilization.
-* Training accuracy being slightly higher than validation accuracy, suggesting good generalization without significant overfitting.
-* The learning rate decreasing as scheduled.
-
-The final confusion matrix indicated good overall performance, with most predictions falling on the diagonal, signifying correct classifications.
-
-## Potential Future Improvements
-
-Despite the promising results, further improvements could be explored:
-
-* **Utilizing Larger Pre-trained Models:** Experimenting with more complex pre-trained architectures like EfficientNet or Vision Transformers.
-* **Applying Data Augmentation:** Increasing the diversity of the training data through transformations like rotations, flips, and zooms to reduce overfitting.
-* **Fine-tuning More Layers:** Gradually unfreezing and fine-tuning more layers of the pre-trained ResNet-50 model.
-* **Training on the Entire Dataset:** After k-fold validation, training the final model on the entire dataset using the best hyperparameters found during cross-validation.
+*Data Scientist | Predictive Modeling | Computer Vision*
