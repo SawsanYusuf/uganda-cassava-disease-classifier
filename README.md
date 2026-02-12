@@ -1,4 +1,4 @@
-#  Crop Diseases in Uganda: Deep Learning for Cassava Leaf Classification
+#  Cassava Leaf Disease Classification Using Transfer Learning (ResNet-18)
 
 ![](https://github.com/SawsanYusuf/Cassava-Disease-Image-Classification/blob/main/Cassava%20Plant.jpg)
 
