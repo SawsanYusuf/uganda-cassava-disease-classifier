@@ -1,4 +1,4 @@
-#  Crop Diseases in Uganda: Deep Learning for Cassava Leaf Classification
+#  Cassava Leaf Disease Classification Using Transfer Learning (ResNet50)
 
 
 ## Project Overview
@@ -57,6 +57,7 @@ We first built a Convolutional Neural Network (CNN) from scratch using standard 
 The model achieved approximately **40% validation accuracy**.
 
 During training, a significant gap was observed between training and validation accuracy. While training accuracy continued to increase, validation accuracy plateaued early. This indicates **overfitting**, meaning the model memorized training samples instead of learning generalizable features.
+
 
 This result established a clear baseline and motivated the use of Transfer Learning.
 
