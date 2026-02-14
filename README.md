@@ -48,88 +48,80 @@ The following preprocessing steps were applied:
 These preprocessing steps ensured compatibility with pretrained CNN architectures such as ResNet50 and improved convergence during training.
 
 
-## Model Development
+## Model Development & Evaluation
 
-### 1. Baseline CNN (From Scratch)
+### Baseline Model – Custom CNN
 
-A custom CNN model was first built using standard convolutional layers.
+We first built a Convolutional Neural Network (CNN) from scratch using standard convolutional and fully connected layers.
 
-- Validation Accuracy: ~40%
-- Observation: Clear gap between training and validation accuracy
-- Conclusion: The model suffered from **overfitting** and poor generalization
+The model achieved approximately **40% validation accuracy**.
+
+During training, a significant gap was observed between training and validation accuracy. While training accuracy continued to increase, validation accuracy plateaued early. This indicates **overfitting**, meaning the model memorized training samples instead of learning generalizable features.
+
+This result established a clear baseline and motivated the use of Transfer Learning.
 
 
-### 2. Transfer Learning with ResNet50
+### Transfer Learning with ResNet50 + K-Fold Validation
 
-To improve performance, we implemented transfer learning using:
+To improve performance, we adopted a pretrained **ResNet50** model from `torchvision`:
 
 ```python
 model = torchvision.models.resnet50(
     weights=torchvision.models.ResNet50_Weights.DEFAULT
 )
-````
+```
 
-Instead of training from scratch:
+To ensure the performance was not due to a lucky split, we applied **K-Fold Cross Validation**.
 
-* Pretrained ImageNet weights were used
-* The final classifier layer was replaced
-* K-Fold Cross Validation was applied to ensure stable performance
+This allowed us to:
 
-### K-Fold Validation Results
+* Train and validate the model across multiple data splits
+* Reduce variance caused by a single train-validation split
+* Evaluate robustness across the entire dataset
 
-The model achieved:
+The model achieved approximately **60% validation accuracy across folds**, representing a significant improvement over the custom CNN baseline.
 
-* **~60–62% validation accuracy across folds**
-
-This confirmed:
-
-* Performance was consistent
-* Improvement was not due to a single lucky split
-* Transfer learning significantly outperformed the baseline CNN
-
-The accuracy curve plateaued, indicating that learning stabilized and overfitting was controlled compared to the baseline model.
+At this stage, the Transfer Learning model was selected as the final architecture.
 
 
-### 3. Final Training with Callbacks
+### Final Training with Callbacks
 
-After selecting the best-performing configuration, the model was retrained using:
+After selecting the best architecture, we retrained the model using training callbacks to further improve stability and performance.
 
-* **StepLR Scheduler** (learning rate decreases every 4 epochs)
-* **Model Checkpointing** (saving best model based on validation loss)
+The following techniques were applied:
 
-During training, we logged:
+* **StepLR Scheduler**
+  The learning rate decreased every 4 epochs, allowing smoother convergence.
 
-* Training Loss
-* Validation Loss
-* Training Accuracy
-* Validation Accuracy
-* Learning Rate
+* **Checkpointing**
+  The best model was saved whenever validation loss improved.
 
-### Learning Curve Analysis
+* **Learning Curve Monitoring**
+  Training loss, validation loss, accuracy, and learning rate were logged at each epoch.
 
-The learning curve shows:
+#### Learning Curve Interpretation
 
-* Validation loss decreases initially and stabilizes
-* Training accuracy slightly higher than validation accuracy (expected behavior)
-* Learning rate decreases every 4 epochs following StepLR schedule
+The learning curve shows how the model improves over time:
 
-This indicates stable convergence without severe overfitting.
+* Validation loss decreased initially and then stabilized.
+* Training accuracy remained slightly higher than validation accuracy (expected behavior).
+* No severe divergence between curves, indicating controlled overfitting.
+* Learning rate decreased according to the StepLR schedule.
+
+After training, the best-performing model (based on validation loss) was loaded for final evaluation.
 
 
-## Model Evaluation
 
 ### Confusion Matrix Analysis
 
-The final confusion matrix demonstrates:
+The final confusion matrix showed strong diagonal dominance, indicating that most predictions were correctly classified.
 
-* Most predictions lie on the diagonal
-* The model performs well overall
-* Some confusion exists between:
+However, some misclassifications were observed:
 
-  * Bacterial Blight and Brown Streak (visual similarity)
-  * Bacterial Blight and Healthy samples (possible feature overlap)
+* Bacterial Blight and Brown Streak were frequently confused due to visual similarity.
+* Some overlap between disease classes and healthy leaves suggests feature-level ambiguity or dataset imbalance.
 
-Despite these challenges, the model achieved meaningful classification capability for agricultural diagnostics.
+Overall, the model demonstrates stable learning behavior and reasonable classification capability for a real-world agricultural dataset.
 
 
 ## Technologies Used
