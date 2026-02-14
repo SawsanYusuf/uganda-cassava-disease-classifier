@@ -59,7 +59,7 @@ The model achieved approximately **40% validation accuracy**.
 During training, a significant gap was observed between training and validation accuracy. While training accuracy continued to increase, validation accuracy plateaued early. This indicates **overfitting**, meaning the model memorized training samples instead of learning generalizable features.
 
 
-This result established a clear baseline and motivated the use of Transfer Learning.
+This suggests that the dataset size was insufficient for training a deep model from scratch, reinforcing the need for transfer learning.
 
 
 ### Transfer Learning with ResNet50 + K-Fold Validation
@@ -142,11 +142,8 @@ Overall, the model demonstrates stable learning behavior and reasonable classifi
 This project demonstrates how Deep Learning can support agricultural sustainability by:
 
 * Enabling early disease detection in cassava crops
-
 * Supporting farmers in remote regions with automated diagnosis tools
-
 * Reducing crop loss and improving food security
-
 * Providing a scalable foundation for mobile-based plant disease detection systems
 
 
