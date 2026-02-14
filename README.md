@@ -1,3 +1,6 @@
+#  Crop Diseases in Uganda: Deep Learning for Cassava Leaf Classification
+
+
 ## Project Overview
 
 Cassava is a critical food crop in many African countries, including Uganda. However, viral and bacterial diseases significantly reduce crop yield and threaten food security.
