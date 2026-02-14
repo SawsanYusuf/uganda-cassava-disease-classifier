@@ -84,6 +84,7 @@ The model achieved approximately **60% validation accuracy across folds**, repre
 
 At this stage, the Transfer Learning model was selected as the final architecture.
 
+This confirmed that pretrained feature extraction significantly improved generalization compared to training from scratch.
 
 ### Final Training with Callbacks
 
