@@ -45,7 +45,7 @@ The following preprocessing steps were applied:
 - Applied **Normalization**
 - Converted images into **PyTorch tensors**
 
-These steps ensured compatibility with pretrained ResNet architecture and stabilized training.
+These preprocessing steps ensured compatibility with pretrained CNN architectures such as ResNet50 and improved convergence during training.
 
 
 ## Model Development
@@ -145,14 +145,18 @@ Despite these challenges, the model achieved meaningful classification capabilit
 
 ## Real-World Impact
 
-This project demonstrates how deep learning can support:
+This project demonstrates how Deep Learning can support agricultural sustainability by:
 
-* Early disease detection in agriculture
-* Reduction of crop loss
-* Data-driven farming practices
-* Scalable AI-powered plant diagnostics
+* Enabling early disease detection in cassava crops
 
-With further refinement and deployment, this system could be integrated into mobile-based diagnostic tools for farmers in low-resource environments.
+* Supporting farmers in remote regions with automated diagnosis tools
+
+* Reducing crop loss and improving food security
+
+* Providing a scalable foundation for mobile-based plant disease detection systems
+
+
+With further optimization and deployment, this model could be integrated into mobile applications to assist farmers in real-time crop monitoring.
 
 
 ## Future Improvements
